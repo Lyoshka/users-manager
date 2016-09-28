@@ -45,5 +45,13 @@
 	и запускаем на выполнение
 
 	php yii rbac/init
+
+	--------
+	привязка ролей к пользователям
+
+	готовим файл commands\RolesController.php
+	и запускаем на выполнение
+
+	php yii roles/assign
 ------
 

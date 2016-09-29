@@ -23,35 +23,3 @@
         ],
 
 
-------
-
-Включаем RBAC
-
-	В файлах config\web.php и config\console.php добавляем
-
-	        'authManager' => [
-	            'class' => 'yii\rbac\DbManager',
-	        ],
-
-	и запускаем миграцию
-
-	php yii migrate --migrationPath=@yii/rbac/migrations/
-
-	--------
-
-	подготовка файла ролей и разрешений
-
-	готовим файл commands\RbacController.php
-	и запускаем на выполнение
-
-	php yii rbac/init
-
-	--------
-	привязка ролей к пользователям
-
-	готовим файл commands\RolesController.php
-	и запускаем на выполнение
-
-	php yii roles/assign
-------
-

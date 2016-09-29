@@ -1,65 +1,70 @@
-------
+## **RBAC**
 
-Включаем RBAC
+---
 
-	В файлах config\web.php и config\console.php добавляем
+### Включаем
 
-	        'authManager' => [
-	            'class' => 'yii\rbac\DbManager',
-	        ],
+В файлах `config\web.php` и `config\console.php` добавляем
 
-	и запускаем миграцию
+`'authManager' => [`
 
-	php yii migrate --migrationPath=@yii/rbac/migrations/
+`     'class' => 'yii\rbac\DbManager',`
 
-	--------
+`],`
 
-	подготовка файла ролей и разрешений
+и запускаем миграцию
 
-	готовим файл commands\RbacController.php
-	и запускаем на выполнение
+`php yii migrate --migrationPath=@yii/rbac/migrations/`
 
-	php yii rbac/init
+---
 
-	--------
-	привязка ролей к пользователям
+### Подготовка файла ролей и разрешений
 
-	готовим файл commands\RolesController.php
-	и запускаем на выполнение
+готовим файл `commands\RbacController.php`
 
-	php yii roles/assign
+и запускаем на выполнение
 
-	--------
-	настройка правил (Rule)
+`php yii rbac/init`
 
-	готовим файл commands\AuthorRule.php
+---
 
-	далее надо в файле commands\RbacController.php
-	добавить привязку правил (для примера):
+### Привязка ролей к пользователям
 
-        // Создадим еще новое разрешение «Редактирование собственной новости» и ассоциируем его с правилом AuthorRule
-        $updateOwnNews = $auth->createPermission('updateOwnNews');
-        $updateOwnNews->description = 'Редактирование собственной новости';
-        
-        // Указываем правило AuthorRule для разрешения updateOwnNews.
-        $updateOwnNews->ruleName = $authorRule->name;
-        
-        // Запишем все разрешения в БД
-        $auth->add($viewAdminPage);
-        $auth->add($updateNews);
-        $auth->add($updateOwnNews);
-        
-        // Теперь добавим наследования. Для роли editor мы добавим разрешение updateOwnNews (редактировать собственную новость),
-        // а для админа добавим собственные разрешения viewAdminPage и updateNews (может смотреть админку и редактировать любую новость)
-        
-        // Роли «Редактор новостей» присваиваем разрешение «Редактирование собственной новости»
-        $auth->addChild($editor,$updateOwnNews);
+готовим файл `commands\RolesController.php`
 
-        // админ имеет собственное разрешение - «Редактирование новости»
-        $auth->addChild($admin, $updateNews);
+и запускаем на выполнение
 
-	
-------
+`php yii roles/assign`
 
+---
 
+### Настройка правил \(Rule\)
+
+готовим файл `commands\AuthorRule.php`
+
+далее надо в файле `commands\RbacController.php`
+
+добавить привязку правил \(для примера\):
+
+`// Создадим еще новое разрешение «Редактирование собственной новости» и ассоциируем его с правилом AuthorRule`
+
+`$updateOwnNews = $auth->createPermission('updateOwnNews');`
+
+`$updateOwnNews->description = 'Редактирование собственной новости';`
+
+`// Указываем правило AuthorRule для разрешения updateOwnNews.`
+
+`$updateOwnNews->ruleName = $authorRule->name;`
+
+`// Запишем все разрешения в БД`
+
+`$auth->add($updateOwnNews);`
+
+`// Теперь добавим наследования. Для роли editor мы добавим разрешение updateOwnNews (редактировать собственную новость),`
+
+`// Роли «Редактор новостей» присваиваем разрешение «Редактирование собственной новости»`
+
+`$auth->addChild($editor,$updateOwnNews);`
+
+---
 
